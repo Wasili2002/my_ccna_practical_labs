@@ -47,9 +47,11 @@ Example commands:
 enable
 configure terminal
 vlan 10
- name ADMIN
+ name CM
 vlan 20
- name ICT
+ name HR
+vlan 30
+ name DC
 end
 show vlan brief
 
@@ -88,16 +90,19 @@ Router-on-a-stick allows multiple VLANs to communicate through a single physical
 Example:
 
 configure terminal
-interface gigabitEthernet 0/0
+interface gigabitEthernet 0/1
  no shutdown
 !
-interface gigabitEthernet 0/0.10
+interface gigabitEthernet 0/1.10
  encapsulation dot1Q 10
  ip address 192.168.10.1 255.255.255.0
 !
-interface gigabitEthernet 0/0.20
+interface gigabitEthernet 0/1.20
  encapsulation dot1Q 20
  ip address 192.168.20.1 255.255.255.0
+ interface gigabitEthernet 0/1.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
 end
 
 The router subinterface IP addresses serve as the default gateways for their respective VLANs.
@@ -109,11 +114,11 @@ The lab demonstrates the difference between configuring an enable password and a
 Enable password:
 
 configure terminal
-enable password YOUR_PASSWORD
+enable password kelvin
 
 Enable secret:
 
-enable secret YOUR_STRONG_SECRET
+enable secret wasili
 
 The "enable secret" command is preferred because it stores the privileged EXEC password using a stronger password-hashing mechanism than the legacy "enable password" command.
 
@@ -126,11 +131,13 @@ DHCP automatically assigns IP addresses and other network settings to clients.
 Example:
 
 configure terminal
-ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+ip dhcp excluded-address 192.168.2.1 192.168.2.10
+ip dhcp excluded-address 192.168.3.1 192.168.3.10
 !
-ip dhcp pool VLAN10
+ip dhcp pool CM
  network 192.168.10.0 255.255.255.0
- default-router 192.168.10.1
+ default-router 192.168.11.1
  dns-server 8.8.8.8
 end
 
@@ -177,7 +184,7 @@ Project Files
 
 The repository may include the following files:
 
-- "vlan-router-on-a-stick-dhcp.pkt" — Packet Tracer lab file.
+- "ccna_lab_1.pkt" — Packet Tracer lab file.
 - "README.md" — Project documentation.
 - "router-config.txt" — Router configuration commands.
 - "switch-config.txt" — Switch configuration commands.
